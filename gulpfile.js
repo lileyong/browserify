@@ -1,7 +1,10 @@
 var gulp = require('gulp')
-var shelljs = require('shelljs')
+var browserify = require('browserify')
+var fs = require('fs')
 
-gulp.task('default', (done) => {
-    shelljs.exec('browserify index.js -o main.js')
-    done()
-})
+function js(cb) {
+    browserify().add('src/index.js').bundle().pipe(fs.createWriteStream('build/main.js'))
+    cb()
+}
+
+exports.default = gulp.series(js)
