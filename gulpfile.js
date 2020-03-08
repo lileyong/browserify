@@ -1,10 +1,18 @@
 var gulp = require('gulp')
 var browserify = require('browserify')
 var fs = require('fs')
+var sequence = require('run-sequence')
 
-function js(cb) {
+gulp.task('mainjs', (cb) => {
     browserify().add('src/index.js').bundle().pipe(fs.createWriteStream('build/main.js'))
     cb()
-}
+})
 
-exports.default = gulp.series(js)
+gulp.watch('src/*.js',()=>{
+    sequence('mainjs')
+})
+
+gulp.task('default', (done) => {
+    sequence('mainjs')
+    done()
+})
