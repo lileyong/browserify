@@ -1,18 +1,34 @@
 var gulp = require('gulp')
-var browserify = require('browserify')
-var fs = require('fs')
 var sequence = require('run-sequence')
+var browserify = require('browserify')
+var watchify = require('watchify')
+var stream = require('vinyl-source-stream')
+var buffer = require('vinyl-buffer')
+var uglify = require('gulp-uglify')
 
 gulp.task('mainjs', (cb) => {
-    browserify().add('src/index.js').bundle().pipe(fs.createWriteStream('build/main.js'))
-    cb()
+    var b = browserify({
+        entries: ['src/index.js'],
+        cache: {},
+        packageCache: {},
+        plugin: [watchify]
+    })
+
+    function bundle() {
+        b
+        .bundle()
+        .pipe(stream('main.js'))
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('./build'))
+    }
+
+    bundle()
+    b.on("update", () => {
+        bundle()
+    })
 })
 
-gulp.watch('src/*.js',()=>{
+gulp.task('default', () => {
     sequence('mainjs')
-})
-
-gulp.task('default', (done) => {
-    sequence('mainjs')
-    done()
 })
