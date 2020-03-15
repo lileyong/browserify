@@ -5,6 +5,7 @@ var browserify = require('browserify')
 var watchify = require('watchify')
 var buffer = require('vinyl-source-buffer')
 var uglify = require('gulp-uglify')
+var coffee = require('gulp-coffee')
 
 var isPrd = process.env.ENV === 'production'
 
@@ -28,6 +29,12 @@ gulp.task('mainjs', (cb) => {
     b.on("update", () => {
         bundle()
     })
+})
+
+gulp.task('coffee', () => {
+    gulp.src('./src/*.coffee')
+        .pipe(coffee())
+        .pipe(gulp.dest('./build'))
 })
 
 gulp.task('default', () => {
