@@ -1,10 +1,12 @@
-(function() {
-  var a;
+"use strict";
 
-  a = 200;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
 
-  if (a < 500) {
-    console.log(a);
-  }
+var _default = function _default() {
+  console.log('es6');
+};
 
-}).call(this);
+exports["default"] = _default;

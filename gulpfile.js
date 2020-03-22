@@ -6,6 +6,7 @@ var watchify = require('watchify')
 var buffer = require('vinyl-source-buffer')
 var uglify = require('gulp-uglify')
 var coffee = require('gulp-coffee')
+var babel = require('gulp-babel')
 
 var isPrd = process.env.ENV === 'production'
 
@@ -37,6 +38,14 @@ gulp.task('coffee', () => {
         .pipe(gulp.dest('./build'))
 })
 
+gulp.task('babel', () => {
+    gulp.src('./src/*.js')
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(gulp.dest('./build'))
+})
+
 gulp.task('default', () => {
-    sequence('mainjs')
+    sequence('babel')
 })
