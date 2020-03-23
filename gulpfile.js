@@ -7,6 +7,7 @@ var buffer = require('vinyl-source-buffer')
 var uglify = require('gulp-uglify')
 var coffee = require('gulp-coffee')
 var babel = require('gulp-babel')
+var minifycss = require('gulp-clean-css')
 
 var isPrd = process.env.ENV === 'production'
 
@@ -44,6 +45,12 @@ gulp.task('babel', () => {
             presets: ['@babel/env']
         }))
         .pipe(gulp.dest('./build'))
+})
+
+gulp.task("minify-css", () => {
+    gulp.src('src/css/*.css')
+        .pipe(minifycss())
+        .pipe(gulp.dest('./css'))
 })
 
 gulp.task('default', () => {
